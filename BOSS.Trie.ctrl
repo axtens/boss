@@ -1,0 +1,196 @@
+# Perl Library PerlCtrl.
+#
+# This control provides ...
+#
+
+package StructureServer::Trie;
+
+
+use strict;
+use warnings;
+
+use Data::Trie;
+use Win32::OLE::Variant;
+
+use Lisp::Printer qw(lisp_print);
+use Lisp::Symbol qw(symbol);
+
+use constant STX => chr( 2 ); #[
+use constant ETX => chr( 3 ); #]
+use constant FS => chr( 28 ); #^
+use constant RS => chr( 30 ); #~
+
+use constant CARET_SEPARATOR => 1;
+use constant FS_SEPARATOR => 2;
+use constant ARRAY_SEPARATOR => 3;
+use constant LISP_SEPARATOR => 4;
+
+our %nodes;
+our %tries;
+
+sub tri {
+  my $trii = shift;
+  $trii = "" unless defined( $trii );
+  my $res;
+  if ( $trii ne "" ) {
+    if ( $tries{$trii} ) {
+      $res = $tries{$trii};
+    } else {
+      $res = undef;
+    }
+  }
+  return $res
+}
+
+sub New {
+  my $trie;
+  $trie = Data::Trie->new;
+  $tries{$trie} = $trie;
+  return $trie;
+}
+
+sub Add  {
+  my ($trie, $key, $data) = (shift, shift, shift);
+  $trie = tri( $trie );
+  if ( defined $data ) {
+    $trie->add( $key, $data );
+  } else {
+    $trie->add( $key );
+  }
+  return $trie;
+}
+
+sub Lookup {
+  my ($trie, $key, $retMode ) = (shift, shift, shift);
+  $trie = tri($trie);
+  $retMode = CARET_SEPARATOR unless defined( $retMode );
+  
+  my ($res, $dat) = $trie->lookup($key);
+  if ( $retMode == CARET_SEPARATOR ) {
+    return $res . "^" . $dat;
+  } elsif ( $retMode == FS_SEPARATOR ) {
+    return $res . FS . $dat;
+  } elsif ( $retMode == ARRAY_SEPARATOR ) {
+    my @r = ( $res, $dat );
+    return \@r;
+  } elsif ( $retMode == LISP_SEPARATOR ) {
+    my @r = ( $res, $dat );
+    return lisp_print( \@r );
+  } else {
+    return undef;
+  }
+}
+
+sub Remove {
+  my ($trie, $key ) = (shift, shift);
+  $trie = tri($trie);
+  $trie->remove($key);
+  return $trie;
+}
+
+sub GetAll {
+  my ($trie, $retMode) = (shift, shift);
+  $trie = tri($trie);
+  $retMode = CARET_SEPARATOR unless defined( $retMode );
+  #~ my %try = %$trie;
+  my @res = $trie->getAll();
+  #~ return lisp_print( \@res ); 
+  #~ return lisp_print( \%try ); 
+  if ( $retMode == CARET_SEPARATOR ) {
+    return join( "^", @res );
+  } elsif ( $retMode == FS_SEPARATOR ) {
+    return join( FS, @res );
+  } elsif ( $retMode == ARRAY_SEPARATOR ) {
+    return \@res;
+  } elsif ( $retMode == LISP_SEPARATOR ) {
+    return lisp_print( \@res );
+  } else {
+    return undef;
+  }
+
+}
+
+
+1;
+
+# Here is the %TypeLib hash.  See the PerlCtrl documentation for
+# information about this hash.
+#
+
+=pod
+
+=begin PerlCtrl
+
+%TypeLib = (
+  PackageName     => 'StructureServer::Trie',
+	TypeLibGUID     => '{9068EDD2-E12F-4329-853A-781CDD06576F}', # do NOT edit this line
+	ControlGUID     => '{367CDE30-E298-4943-B603-8F60373ADAE3}', # do NOT edit this line either
+	DispInterfaceIID=> '{93739640-357B-43AA-856C-87EDFC25DE3D}', # or this one
+  ControlName     => 'Trie',
+  ControlVer      => 1,  # increment if new object with same ProgID
+  # create new GUIDs as well
+  ProgID          => 'StructureServer.Trie',
+  Methods         => {
+    'New' => {
+      DocString           => "Creates a new Data::Trie object.",
+      RetType             =>  VT_BSTR,
+      TotalParams         =>  0,
+      NumOptionalParams   =>  0,
+      ParamList           => []
+    },
+    'Add' => {
+      DocString           => "Add data to the trie.",
+      RetType             =>  VT_BSTR,
+      TotalParams         =>  3,
+      NumOptionalParams   =>  1,
+      ParamList           => [ 'node' => VT_BSTR, 'key' => VT_VARIANT, 'data' => VT_VARIANT]
+    },
+    'Lookup' => {
+      DocString           => "Lookup data and result in trie.",
+      RetType             =>  VT_VARIANT | VT_ARRAY,
+      TotalParams         =>  3,
+      NumOptionalParams   =>  0,
+      ParamList           => [ 'trie' => VT_BSTR, 'key' => VT_VARIANT, 'retMode' => VT_I4]
+    },
+    'Remove' => {
+      DocString           => "Remove (but not prune) from trie.",
+      RetType             =>  VT_ARRAY | VT_VARIANT,
+      TotalParams         =>  1,
+      NumOptionalParams   =>  0,
+      ParamList           => [ 'trie' => VT_BSTR, 'key' => VT_VARIANT]
+    },
+    'GetAll' => {
+      DocString           => "Get all data in trie.",
+      RetType             =>  VT_ARRAY|VT_VARIANT,
+      TotalParams         =>  2,
+      NumOptionalParams   =>  0,
+      ParamList           => [ 'trie' => VT_BSTR, 'retMode' => VT_I4]
+    }
+  },  # end of 'Methods'
+  Properties        => {
+      'CARET_SEPARATOR' => {
+      DocString  => "Specifies that carets be used to separate items in GetAll.",
+      Type => VT_I4, 
+      ReadOnly => 1
+      },
+      'FS_SEPARATOR' => {
+      DocString  => "Specifies that CHAR(28) be used to separate items in GetAll.",
+      Type => VT_I4, 
+      ReadOnly => 1
+      },
+      'ARRAY_SEPARATOR' => {
+      DocString  => "Specifies that items in GetAll be returned as an array.",
+      Type => VT_I4, 
+      ReadOnly => 1
+      },
+      'LISP_SEPARATOR' => {
+      DocString  => "Specifies that carets in GetAll be returned as a Lisp-like expression.",
+      Type => VT_I4, 
+      ReadOnly => 1
+      }
+  }  # end of 'Properties'
+);  # end of %TypeLib
+
+=end PerlCtrl
+
+=cut

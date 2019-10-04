@@ -1,0 +1,35 @@
+#!C:\Program Files\ActiveState Perl Dev Kit 7.3 Deployment\bin\lib\pai.exe
+PAP-Version: 1.0
+Packer: C:\Program Files\ActiveState Perl Dev Kit 7.3 Deployment\bin\perlctrl.exe
+Script: BOSS.ctrl
+Cwd: P:\Production\BOSS
+Byref: 0
+Clean: 1
+Date: 2009-02-13 12:30:42
+Debug: 
+Dependent: 0
+Dyndll: 0
+Exe: BOSS.dll
+Force: 1
+Gui: 0
+Hostname: babel
+No-Compress: 0
+No-Gui: 0
+No-Logo: 0
+Runlib: 
+Shared: none
+Singleton: 0
+Tmpdir: 
+Verbose: 0
+Version-Comments: 
+Version-CompanyName: Strapper Technologies
+Version-FileDescription: Wrapper for various Perl ADT modules
+Version-FileVersion: 1.0
+Version-InternalName: BOSS
+Version-LegalCopyright: Strapper Technologies, 2009
+Version-LegalTrademarks: 
+Version-OriginalFilename: BOSS.ctrl
+Version-ProductName: StructureServer
+Version-ProductVersion: 1.0
+Warnings: 0
+Xclude: 1

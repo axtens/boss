@@ -1,0 +1,31 @@
+#!C:\Program Files\ActiveState Perl Dev Kit 7.2\bin\lib\pai.exe
+PAP-Version: 1.0
+Packer: C:\Program Files\ActiveState Perl Dev Kit 7.2\bin\perlctrl.exe
+Script: BOSS.Nary.ctrl
+Cwd: P:\Production\BOSS
+Byref: 0
+Clean: 0
+Date: 2010-02-11 22:20:33
+Debug: 
+Dependent: 0
+Exe: BOSS.Nary.dll
+Force: 1
+Hostname: SEVEN--
+No-Compress: 0
+No-Logo: 0
+Runlib: 
+Shared: none
+Tmpdir: 
+Trim: Pod::Usage
+Verbose: 1
+Version-Comments: 
+Version-CompanyName: Strapper Technologies
+Version-FileDescription: Wrapper for Tree::Nary, Lisp::Symbol and Lisp::Printer
+Version-FileVersion: 1.2
+Version-InternalName: BOSS
+Version-LegalCopyright: Strapper Technologies, 2010
+Version-LegalTrademarks: 
+Version-OriginalFilename: Bruce's Own Structure Server
+Version-ProductName: BOSS.Nary
+Version-ProductVersion: 2.0
+Xclude: 1

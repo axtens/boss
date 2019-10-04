@@ -1,0 +1,32 @@
+#!C:\Program Files\ActiveState Perl Dev Kit 7.3\bin\lib\pai.exe
+PAP-Version: 1.0
+Packer: C:\Program Files\ActiveState Perl Dev Kit 7.3\bin\perlctrl.exe
+Script: BOSS.Trie.ctrl
+Cwd: G:\boss
+Byref: 0
+Clean: 0
+Date: 2010-02-12 17:47:33
+Debug: 
+Dependent: 0
+Exe: BOSS.Trie.dll
+Force: 1
+Hostname: ITDEPT
+No-Compress: 0
+No-Logo: 0
+Runlib: 
+Shared: none
+Tmpdir: 
+Trim: Pod::Usage
+Verbose: 1
+Version-Comments: 
+Version-CompanyName: Strapper Technologies
+Version-FileDescription: Wrapper for Data::Trie
+Version-FileVersion: 1.2
+Version-InternalName: BOSS.Trie
+Version-LegalCopyright: Strapper Technologies, 2010
+Version-LegalTrademarks: 
+Version-OriginalFilename: 
+Version-ProductName: BOSS.Trie
+Version-ProductVersion: 2.0
+Warnings: 0
+Xclude: 1
